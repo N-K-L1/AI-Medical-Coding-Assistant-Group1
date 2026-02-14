@@ -1,18 +1,18 @@
-.login-container {
+.signup-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #2e6d6d 0%, #2e6d6d 100%);
-  padding: 20px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  padding: 40px 20px;
 }
 
-.login-card {
+.signup-card {
   background: white;
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 450px;
+  max-width: 600px;
   padding: 40px;
   animation: slideUp 0.5s ease-out;
 }
@@ -28,35 +28,41 @@
   }
 }
 
-.login-header {
+.signup-header {
   text-align: center;
   margin-bottom: 30px;
 }
 
-.login-header h1 {
-  color: #2e6d6d;
+.signup-header h1 {
+  color: #10b981;
   font-size: 28px;
   margin-bottom: 10px;
   font-weight: 700;
 }
 
-.login-header h2 {
-  color: #2e6d6d;
-  font-size: 32px;
+.signup-header h2 {
+  color: #333;
+  font-size: 24px;
   margin-bottom: 8px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
-.login-header p {
+.signup-header p {
   color: #666;
   font-size: 14px;
   margin: 0;
 }
 
-.login-form {
+.signup-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
 .form-group {
@@ -92,8 +98,8 @@
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #2e6d6d;
-  box-shadow: 0 0 0 3px rgba(46, 109, 109, 0.1);
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
 .form-group input.error {
@@ -106,43 +112,36 @@
   margin-top: -4px;
 }
 
-.form-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.terms-checkbox {
   margin-top: -8px;
 }
 
-.remember-me {
+.terms-checkbox label {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  cursor: pointer;
-  font-size: 14px;
   color: #666;
-}
-
-.remember-me input[type="checkbox"] {
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-}
-
-.forgot-password {
-  color: #2e6d6d;
-  text-decoration: none;
   font-size: 14px;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  cursor: pointer;
 }
 
-.forgot-password:hover {
-  color: #2e6d6d;
+.terms-checkbox input[type="checkbox"] {
+  margin-top: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.terms-checkbox a {
+  color: #10b981;
+  text-decoration: none;
+}
+
+.terms-checkbox a:hover {
   text-decoration: underline;
 }
 
-.login-button {
-  background: linear-gradient(135deg, #2e6d6d 0%, #2e6d6d 100%);
+.signup-button {
+  background: #10b981;
   color: white;
   border: none;
   padding: 14px;
@@ -150,54 +149,72 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s ease;
   margin-top: 8px;
 }
 
-.login-button:hover {
+.signup-button:hover {
+  background: #059669;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(46, 109, 109, 0.4);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
-.login-button:active {
+.signup-button:active {
   transform: translateY(0);
 }
 
-.signup-link {
+.login-link {
   text-align: center;
   color: #666;
   font-size: 14px;
-  margin-top: 8px;
 }
 
-.signup-link a {
-  color: #2e6d6d;
+.login-link a {
+  color: #10b981;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 
-.signup-link a:hover {
-  color: #2e6d6d;
+.login-link a:hover {
+  color: #059669;
   text-decoration: underline;
 }
 
-@media (max-width: 480px) {
-  .login-card {
-    padding: 30px 24px;
+.portal-switch {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 8px;
+}
+
+.portal-switch a {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.portal-switch a:hover {
+  color: #10b981;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .signup-card {
+    padding: 30px 20px;
   }
 
-  .login-header h1 {
+  .signup-header h1 {
     font-size: 24px;
   }
 
-  .login-header h2 {
+  .signup-header h2 {
     font-size: 20px;
   }
 
-  .form-options {
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
+  .form-row {
+    grid-template-columns: 1fr;
   }
 }

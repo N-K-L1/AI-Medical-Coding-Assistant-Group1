@@ -38,7 +38,7 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #2563EB;
+  border-color: #2e6d6d;
 }
 
 .search-input::placeholder {

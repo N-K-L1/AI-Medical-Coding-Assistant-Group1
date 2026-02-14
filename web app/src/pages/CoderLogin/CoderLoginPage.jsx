@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Login.css';
+import './CoderLogin.css';
 
-const LoginPage = () => {
+const CoderLoginPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -48,32 +48,10 @@ const LoginPage = () => {
     const newErrors = validateForm();
     
     if (Object.keys(newErrors).length === 0) {
-      console.log('Login form submitted:', formData);
-      
-      // Check if user is registered and get their role
-      const users = JSON.parse(localStorage.getItem('registeredUsers') || '{}');
-      const user = users[formData.email];
-      
-      if (user) {
-        // Check password (in production, use proper authentication)
-        if (user.password === formData.password) {
-          localStorage.setItem('userEmail', formData.email);
-          localStorage.setItem('userRole', user.role);
-          
-          // Route based on registered role
-          if (user.role === 'coder') {
-            navigate('/coder-dashboard');
-          } else {
-            navigate('/dashboard');
-          }
-        } else {
-          setErrors({ password: 'Incorrect password' });
-        }
-      } else {
-        // User not registered, default to doctor dashboard
-        localStorage.setItem('userEmail', formData.email);
-        navigate('/dashboard');
-      }
+      console.log('Coder login form submitted:', formData);
+      localStorage.setItem('userEmail', formData.email);
+      localStorage.setItem('userRole', 'coder');
+      navigate('/coder-dashboard');
     } else {
       setErrors(newErrors);
     }
@@ -83,6 +61,7 @@ const LoginPage = () => {
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
+          <h1>Medical Coder Portal</h1>
           <h2>Login</h2>
           <p>Welcome back! Please login to your account.</p>
         </div>
@@ -129,7 +108,11 @@ const LoginPage = () => {
           </button>
 
           <div className="signup-link">
-            Don't have an account? <Link to="/signup">Sign up</Link>
+            Don't have an account? <Link to="/coder-signup">Sign up</Link>
+          </div>
+          
+          <div className="portal-switch">
+            <Link to="/login">Switch to Doctor Portal →</Link>
           </div>
         </form>
       </div>
@@ -137,4 +120,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default CoderLoginPage;

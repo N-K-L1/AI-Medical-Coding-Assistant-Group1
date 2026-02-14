@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Signup.css';
+import './CoderSignup.css';
 
-const SignupPage = () => {
+const CoderSignupPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
-    role: 'doctor'
+    confirmPassword: ''
   });
   const [errors, setErrors] = useState({});
 
@@ -56,24 +55,10 @@ const SignupPage = () => {
     const newErrors = validateForm();
     
     if (Object.keys(newErrors).length === 0) {
-      console.log('Signup form submitted:', formData);
-      
-      // Store user registration info
-      const users = JSON.parse(localStorage.getItem('registeredUsers') || '{}');
-      users[formData.email] = {
-        role: formData.role,
-        password: formData.password // In production, this should be hashed
-      };
-      localStorage.setItem('registeredUsers', JSON.stringify(users));
+      console.log('Coder signup form submitted:', formData);
       localStorage.setItem('userEmail', formData.email);
-      localStorage.setItem('userRole', formData.role);
-      
-      // Route based on role
-      if (formData.role === 'coder') {
-        navigate('/coder-dashboard');
-      } else {
-        navigate('/dashboard');
-      }
+      localStorage.setItem('userRole', 'coder');
+      navigate('/coder-dashboard');
     } else {
       setErrors(newErrors);
     }
@@ -83,25 +68,12 @@ const SignupPage = () => {
     <div className="signup-container">
       <div className="signup-card">
         <div className="signup-header">
+          <h1>Medical Coder Portal</h1>
           <h2>Create Account</h2>
-          <p>Join us and manage your medical records efficiently.</p>
+          <p>Join us and manage medical coding efficiently.</p>
         </div>
         
         <form onSubmit={handleSubmit} className="signup-form">
-          <div className="form-group">
-            <label htmlFor="role">I am a</label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="role-select"
-            >
-              <option value="doctor">Doctor</option>
-              <option value="coder">Medical Coder</option>
-            </select>
-          </div>
-
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
             <input
@@ -156,7 +128,11 @@ const SignupPage = () => {
           </button>
 
           <div className="login-link">
-            Already have an account? <Link to="/login">Login</Link>
+            Already have an account? <Link to="/coder-login">Login</Link>
+          </div>
+          
+          <div className="portal-switch">
+            <Link to="/signup">Switch to Doctor Portal →</Link>
           </div>
         </form>
       </div>
@@ -164,4 +140,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default CoderSignupPage;
