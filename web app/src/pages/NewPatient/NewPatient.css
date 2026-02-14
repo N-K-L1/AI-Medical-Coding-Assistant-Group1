@@ -63,7 +63,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #2563EB;
+  border-color: #2e6d6d;
 }
 
 .form-group textarea {
@@ -97,7 +97,7 @@
 .submit-btn {
   width: 100%;
   padding: 14px;
-  background: #2563EB;
+  background: #2e6d6d;
   color: white;
   border: none;
   border-radius: 8px;
@@ -109,7 +109,7 @@
 }
 
 .submit-btn:hover {
-  background: #1d4ed8;
+  background: #2e6d6d;
 }
 
 /* Responsive Design */

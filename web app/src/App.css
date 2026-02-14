@@ -7,7 +7,7 @@
 /* Sidebar Styles */
 .sidebar {
   width: 240px;
-  background: linear-gradient(180deg, #2563EB 0%, #1d4ed8 100%);
+  background: linear-gradient(180deg, #2e6d6d 0%, #2e6d6d 100%);
   color: white;
   display: flex;
   flex-direction: column;
@@ -70,7 +70,7 @@
 
 .menu-item.active {
   background: white;
-  color: #2563EB;
+  color: #2e6d6d;
   font-weight: 500;
 }
 
@@ -129,7 +129,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 8px 8px 16px;
-  background: #2563EB;
+  background: #2e6d6d;
   color: white;
   border: none;
   border-radius: 6px;
@@ -139,7 +139,7 @@
 }
 
 .logout-btn:hover {
-  background: #1d4ed8;
+  background: #2e6d6d;
 }
 
 .logout-btn .icon {
@@ -211,7 +211,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #2563EB;
+  border-color: #2e6d6d;
 }
 
 .form-group textarea {
@@ -245,7 +245,7 @@
 .submit-btn {
   width: 100%;
   padding: 14px;
-  background: #2563EB;
+  background: #2e6d6d;
   color: white;
   border: none;
   border-radius: 8px;
@@ -257,7 +257,7 @@
 }
 
 .submit-btn:hover {
-  background: #1d4ed8;
+  background: #2e6d6d;
 }
 
 /* Coming Soon */

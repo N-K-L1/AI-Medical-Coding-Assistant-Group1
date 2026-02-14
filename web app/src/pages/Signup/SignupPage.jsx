@@ -5,12 +5,10 @@ import './Signup.css';
 const SignupPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    fullName: '',
     email: '',
     password: '',
     confirmPassword: '',
-    specialization: '',
-    licenseNumber: ''
+    role: 'doctor'
   });
   const [errors, setErrors] = useState({});
 
@@ -32,12 +30,6 @@ const SignupPage = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
-    } else if (formData.fullName.trim().length < 2) {
-      newErrors.fullName = 'Name must be at least 2 characters';
-    }
-    
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -46,24 +38,14 @@ const SignupPage = () => {
     
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain uppercase, lowercase, and number';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
     }
     
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
-    }
-    
-    if (!formData.specialization.trim()) {
-      newErrors.specialization = 'Specialization is required';
-    }
-    
-    if (!formData.licenseNumber.trim()) {
-      newErrors.licenseNumber = 'License number is required';
     }
     
     return newErrors;
@@ -75,9 +57,23 @@ const SignupPage = () => {
     
     if (Object.keys(newErrors).length === 0) {
       console.log('Signup form submitted:', formData);
-      // Add your signup logic here
-      alert('Account created successfully!');
-      navigate('/dashboard');
+      
+      // Store user registration info
+      const users = JSON.parse(localStorage.getItem('registeredUsers') || '{}');
+      users[formData.email] = {
+        role: formData.role,
+        password: formData.password // In production, this should be hashed
+      };
+      localStorage.setItem('registeredUsers', JSON.stringify(users));
+      localStorage.setItem('userEmail', formData.email);
+      localStorage.setItem('userRole', formData.role);
+      
+      // Route based on role
+      if (formData.role === 'coder') {
+        navigate('/coder-dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } else {
       setErrors(newErrors);
     }
@@ -87,24 +83,23 @@ const SignupPage = () => {
     <div className="signup-container">
       <div className="signup-card">
         <div className="signup-header">
-          <h1>Doctor Dashboard</h1>
           <h2>Create Account</h2>
           <p>Join us and manage your medical records efficiently.</p>
         </div>
         
         <form onSubmit={handleSubmit} className="signup-form">
           <div className="form-group">
-            <label htmlFor="fullName">Full Name</label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
+            <label htmlFor="role">I am a</label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
               onChange={handleChange}
-              className={errors.fullName ? 'error' : ''}
-              placeholder="Dr. John Doe"
-            />
-            {errors.fullName && <span className="error-message">{errors.fullName}</span>}
+              className="role-select"
+            >
+              <option value="doctor">Doctor</option>
+              <option value="coder">Medical Coder</option>
+            </select>
           </div>
 
           <div className="form-group">
@@ -116,39 +111,9 @@ const SignupPage = () => {
               value={formData.email}
               onChange={handleChange}
               className={errors.email ? 'error' : ''}
-              placeholder="doctor@hospital.com"
+              placeholder="Enter your email"
             />
             {errors.email && <span className="error-message">{errors.email}</span>}
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="specialization">Specialization</label>
-              <input
-                type="text"
-                id="specialization"
-                name="specialization"
-                value={formData.specialization}
-                onChange={handleChange}
-                className={errors.specialization ? 'error' : ''}
-                placeholder="Cardiology"
-              />
-              {errors.specialization && <span className="error-message">{errors.specialization}</span>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="licenseNumber">License Number</label>
-              <input
-                type="text"
-                id="licenseNumber"
-                name="licenseNumber"
-                value={formData.licenseNumber}
-                onChange={handleChange}
-                className={errors.licenseNumber ? 'error' : ''}
-                placeholder="MED-12345"
-              />
-              {errors.licenseNumber && <span className="error-message">{errors.licenseNumber}</span>}
-            </div>
           </div>
 
           <div className="form-group">

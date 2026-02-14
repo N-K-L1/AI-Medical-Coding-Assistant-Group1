@@ -49,9 +49,31 @@ const LoginPage = () => {
     
     if (Object.keys(newErrors).length === 0) {
       console.log('Login form submitted:', formData);
-      // Add your login logic here
-      alert('Login successful!');
-      navigate('/dashboard');
+      
+      // Check if user is registered and get their role
+      const users = JSON.parse(localStorage.getItem('registeredUsers') || '{}');
+      const user = users[formData.email];
+      
+      if (user) {
+        // Check password (in production, use proper authentication)
+        if (user.password === formData.password) {
+          localStorage.setItem('userEmail', formData.email);
+          localStorage.setItem('userRole', user.role);
+          
+          // Route based on registered role
+          if (user.role === 'coder') {
+            navigate('/coder-dashboard');
+          } else {
+            navigate('/dashboard');
+          }
+        } else {
+          setErrors({ password: 'Incorrect password' });
+        }
+      } else {
+        // User not registered, default to doctor dashboard
+        localStorage.setItem('userEmail', formData.email);
+        navigate('/dashboard');
+      }
     } else {
       setErrors(newErrors);
     }
@@ -61,7 +83,6 @@ const LoginPage = () => {
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
-          <h1>Doctor Dashboard</h1>
           <h2>Login</h2>
           <p>Welcome back! Please login to your account.</p>
         </div>

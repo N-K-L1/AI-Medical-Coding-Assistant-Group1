@@ -7,7 +7,7 @@ function Sidebar({ currentView, setCurrentView }) {
         <div className="logo">
           <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
             <path d="M50 20 C30 20 20 30 20 45 C20 65 50 85 50 85 C50 85 80 65 80 45 C80 30 70 20 50 20 Z" fill="white"/>
-            <path d="M30 50 L40 50 L45 38 L50 62 L55 42 L60 50 L70 50" stroke="#2563EB" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M30 50 L40 50 L45 38 L50 62 L55 42 L60 50 L70 50" stroke="#2e6d6d" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
           <div>
             <h2>AI Medical</h2>

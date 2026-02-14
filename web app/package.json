@@ -3,14 +3,23 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "server": "json-server --watch product.json --port 9000"
+    "dev": "vite",
+    "backend": "json-server --watch db.json --port 3000",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.0.0",
     "json-server": "^1.0.0-beta.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@vitejs/plugin-react": "^4.0.0"
+  },
   "description": ""
 }
