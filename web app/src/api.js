@@ -3,24 +3,24 @@ const API_BASE_URL = 'http://localhost:3000';
 
 // Authentication
 export const authAPI = {
-    // Doctor/User login
-    loginDoctor: async (username, password) => {
-        const response = await fetch(`${API_BASE_URL}/users?username=${username}`);
+    // Doctor/User login by email
+    loginDoctor: async (email, password) => {
+        const response = await fetch(`${API_BASE_URL}/users?email=${email}`);
         const users = await response.json();
         if (users.length > 0 && users[0].password === password) {
             return users[0];
         }
-        throw new Error('Invalid credentials');
+        throw new Error('Invalid email or password');
     },
 
-    // Coder login
-    loginCoder: async (username, password) => {
-        const response = await fetch(`${API_BASE_URL}/coders?username=${username}`);
+    // Coder login by email
+    loginCoder: async (email, password) => {
+        const response = await fetch(`${API_BASE_URL}/coders?email=${email}`);
         const coders = await response.json();
         if (coders.length > 0 && coders[0].password === password) {
             return coders[0];
         }
-        throw new Error('Invalid credentials');
+        throw new Error('Invalid email or password');
     },
 
     // Doctor signup

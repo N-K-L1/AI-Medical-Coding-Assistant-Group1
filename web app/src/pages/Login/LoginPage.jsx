@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { authAPI } from '../../api';
 import './Login.css';
 
 const LoginPage = () => {
@@ -27,52 +28,45 @@ const LoginPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
-    
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-    
+
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();
-    
+
     if (Object.keys(newErrors).length === 0) {
-      console.log('Login form submitted:', formData);
-      
-      // Check if user is registered and get their role
-      const users = JSON.parse(localStorage.getItem('registeredUsers') || '{}');
-      const user = users[formData.email];
-      
-      if (user) {
-        // Check password (in production, use proper authentication)
-        if (user.password === formData.password) {
-          localStorage.setItem('userEmail', formData.email);
-          localStorage.setItem('userRole', user.role);
-          
-          // Route based on registered role
-          if (user.role === 'coder') {
-            navigate('/coder-dashboard');
-          } else {
-            navigate('/dashboard');
-          }
-        } else {
-          setErrors({ password: 'Incorrect password' });
-        }
-      } else {
-        // User not registered, default to doctor dashboard
+      try {
+        // Authenticate against db.json
+        const user = await authAPI.loginDoctor(formData.email, formData.password);
+
+        // Save user info to localStorage
         localStorage.setItem('userEmail', formData.email);
-        navigate('/dashboard');
+        localStorage.setItem('userId', user.id);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('userRole', user.role);
+
+        // Route based on role
+        if (user.role === 'coder') {
+          navigate('/coder-dashboard');
+        } else {
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        setErrors({ form: error.message });
       }
     } else {
       setErrors(newErrors);
@@ -86,8 +80,9 @@ const LoginPage = () => {
           <h2>Login</h2>
           <p>Welcome back! Please login to your account.</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="login-form">
+          {errors.form && <div className="error-message" style={{ marginBottom: '15px' }}>{errors.form}</div>}
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
             <input
