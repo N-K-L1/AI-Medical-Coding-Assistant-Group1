@@ -342,48 +342,49 @@
 
                     <div class="form-group">
                         <label>Patient Name</label>
-                        <input type="text" placeholder="Enter patient name">
+                        <input type="text" id="patientName" placeholder="Enter patient name" required>
                     </div>
 
                     <div class="form-group-double">
                         <div class="form-group">
                             <label>Gender</label>
-                            <select>
+                            <select id="gender" required>
                                 <option>Select Gender</option>
-                                <option>Male</option>
-                                <option>Female</option>
+                                <option>M</option>
+                                <option>F</option>
                                 <option>Other</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Date of Birth</label>
-                            <input type="date" placeholder="mm/dd/yyyy">
+                            <input type="date" id="dob" placeholder="mm/dd/yyyy">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Chief Complaint</label>
-                        <textarea placeholder="Enter main reason patient came to hospital"></textarea>
+                        <textarea id="chiefComplaint"
+                            placeholder="Enter main reason patient came to hospital"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Present Illness</label>
-                        <textarea placeholder="Enter details about current illness"></textarea>
+                        <textarea id="presentIllness" placeholder="Enter details about current illness"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Past Medical History</label>
-                        <textarea placeholder="Enter any medical history"></textarea>
+                        <textarea id="pastHistory" placeholder="Enter any medical history"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Family History</label>
-                        <textarea placeholder="Enter family medical history"></textarea>
+                        <textarea id="familyHistory" placeholder="Enter family medical history"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Physical examination findings</label>
-                        <textarea placeholder="Enter physical examination findings"></textarea>
+                        <textarea id="physicalExam" placeholder="Enter physical examination findings"></textarea>
                     </div>
                 </div>
 
@@ -394,23 +395,23 @@
                     <div class="vital-signs">
                         <div class="vital-input-group">
                             <label>BT</label>
-                            <input type="text" placeholder="None">
+                            <input type="text" id="vitalBT" placeholder="None">
                         </div>
                         <div class="vital-input-group">
                             <label>BP</label>
-                            <input type="text" placeholder="None">
+                            <input type="text" id="vitalBP" placeholder="None">
                         </div>
                         <div class="vital-input-group">
                             <label>IT</label>
-                            <input type="text" placeholder="None">
+                            <input type="text" id="vitalIT" placeholder="None">
                         </div>
                         <div class="vital-input-group">
                             <label>RR</label>
-                            <input type="text" placeholder="None">
+                            <input type="text" id="vitalRR" placeholder="None">
                         </div>
                         <div class="vital-input-group">
                             <label>wt</label>
-                            <input type="text" placeholder="None">
+                            <input type="text" id="vitalWT" placeholder="None">
                         </div>
                     </div>
                 </div>
@@ -419,17 +420,17 @@
                 <div style="margin-bottom: 30px;">
                     <div class="form-group">
                         <label>Pre diagnosis</label>
-                        <textarea placeholder="Enter here..."></textarea>
+                        <textarea id="preDiagnosis" placeholder="Enter here..."></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Reason for admit</label>
-                        <textarea placeholder="Enter here..."></textarea>
+                        <textarea id="reasonForAdmit" placeholder="Enter here..."></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Treatment plan</label>
-                        <textarea placeholder="Enter here..."></textarea>
+                        <textarea id="treatmentPlan" placeholder="Enter here..."></textarea>
                     </div>
                 </div>
 
@@ -440,6 +441,64 @@
             </form>
         </div>
     </div>
+
+    <script>
+        // Handle form submission
+        document.querySelector('.form-section').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form values
+            const newPatient = {
+                name: document.getElementById('patientName').value,
+                gender: document.getElementById('gender').value,
+                age: calculateAge(document.getElementById('dob').value),
+                cc: document.getElementById('chiefComplaint').value,
+                pl: document.getElementById('presentIllness').value,
+                ph: document.getElementById('pastHistory').value,
+                im: document.getElementById('physicalExam').value,
+                lr: '',
+                pt: document.getElementById('vitalBP').value,
+                lp: document.getElementById('vitalBT').value,
+                sp: document.getElementById('vitalIT').value,
+                preDiagnosis: document.getElementById('preDiagnosis').value,
+                reasonForAdmit: document.getElementById('reasonForAdmit').value,
+                treatmentPlan: document.getElementById('treatmentPlan').value
+            };
+
+            // Get existing patients from localStorage
+            let patients = JSON.parse(localStorage.getItem('patients')) || [];
+
+            // Add new patient
+            patients.push(newPatient);
+
+            // Save back to localStorage
+            localStorage.setItem('patients', JSON.stringify(patients));
+
+            // Show success message
+            alert('Patient added successfully!');
+
+            // Reset form
+            this.reset();
+
+            // Optionally redirect to medical records
+            setTimeout(() => {
+                window.location.href = 'medical-records.html';
+            }, 500);
+        });
+
+        // Calculate age from date of birth
+        function calculateAge(dob) {
+            if (!dob) return '';
+            const birthDate = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+    </script>
 </body>
 
 </html>
