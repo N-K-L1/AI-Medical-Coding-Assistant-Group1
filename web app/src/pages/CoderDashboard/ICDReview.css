@@ -148,6 +148,47 @@
   transform: none;
 }
 
+.reject-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.reject-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.reject-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.retry-btn {
+  background: #2e6d6d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retry-btn:hover {
+  background: #1f4a4a;
+  transform: translateY(-1px);
+}
+
 .edit-btn:disabled {
   background: #6b7280;
   cursor: not-allowed;
@@ -168,7 +209,7 @@
 }
 
 .save-btn:hover {
-  background: #2e6d6d;
+  background: #1f4a4a;
   transform: translateY(-1px);
 }
 

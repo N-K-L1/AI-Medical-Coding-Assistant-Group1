@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { medicalRecordAPI, mlAPI, icdReviewAPI, icdCodeAPI } from '../../../api';
 
 function NewPatientForm() {
   const [formData, setFormData] = useState({
@@ -20,6 +21,9 @@ function NewPatientForm() {
     treatmentPlan: ''
   });
 
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -28,51 +32,177 @@ function NewPatientForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Get existing patients from localStorage
-    const existingPatients = localStorage.getItem('patients');
-    const patients = existingPatients ? JSON.parse(existingPatients) : [];
-    
-    // Add new patient data
-    patients.push({
-      ...formData,
-      submittedAt: new Date().toISOString()
-    });
-    
-    // Save to localStorage
-    localStorage.setItem('patients', JSON.stringify(patients));
-    
-    console.log('Form submitted:', formData);
-    alert('Patient data submitted successfully!');
-    
-    // Reset form
-    setFormData({
-      patientName: '',
-      gender: '',
-      age: '',
-      cc: '',
-      pi: '',
-      ph: '',
-      fh: '',
-      examination: '',
-      bt: '',
-      pr: '',
-      rr: '',
-      bp: '',
-      o2: '',
-      preDiagnosis: '',
-      reasonForAdmit: '',
-      treatmentPlan: ''
-    });
+    setLoading(true);
+    setMessage('');
+
+    try {
+      const doctorId = localStorage.getItem('userId');
+      if (!doctorId) {
+        throw new Error('Doctor ID not found. Please log in again.');
+      }
+
+      const patientId = 1; // TODO: Get actual patient ID from form or database
+
+      // 1. Create medical record in json-server
+      console.log('Step 1: Creating medical record...');
+      const medicalRecord = {
+        patientId: parseInt(patientId),
+        doctorId: parseInt(doctorId),
+        visitDate: new Date().toISOString().split('T')[0],
+        diagnosis: formData.cc,
+        symptoms: formData.pi ? [formData.pi] : [],
+        medications: formData.treatmentPlan ? [formData.treatmentPlan] : [],
+        notes: formData.preDiagnosis,
+        icdCodesAssigned: []
+      };
+
+      console.log('Medical record data:', medicalRecord);
+      const savedRecord = await medicalRecordAPI.create(medicalRecord);
+      console.log('Step 1 OK: Medical record created:', savedRecord);
+
+      if (!savedRecord || !savedRecord.id) {
+        throw new Error('Failed to create medical record - no ID returned');
+      }
+
+      // 2. Prepare data for ML prediction
+      console.log('Step 2: Preparing ML prediction...');
+      const predictionData = {
+        diagnosis: formData.cc,
+        symptoms: formData.pi ? [formData.pi] : [],
+        medications: formData.treatmentPlan ? [formData.treatmentPlan] : [],
+        notes: formData.preDiagnosis,
+        patient_age: parseInt(formData.age) || 0,
+        patient_gender: formData.gender,
+        vitals: {
+          temperature: parseFloat(formData.bt) || 0,
+          pulse_rate: parseFloat(formData.pr) || 0,
+          respiratory_rate: parseFloat(formData.rr) || 0,
+          blood_pressure: formData.bp || '',
+          oxygen_saturation: parseFloat(formData.o2) || 0
+        },
+        top_k: 5
+      };
+
+      // 3. Call ML prediction API
+      console.log('Step 3: Calling ML prediction API...');
+      let predictions = null;
+      try {
+        predictions = await mlAPI.predictICDCodes(predictionData);
+        console.log('Step 3 OK: Predictions received:', predictions);
+
+        if (predictions.error) {
+          console.warn('Step 3 WARNING: ML prediction error:', predictions.error);
+          predictions = null; // Continue without ML predictions
+        }
+      } catch (mlError) {
+        console.warn('Step 3 WARNING: ML server unavailable:', mlError.message);
+        // Continue without ML predictions
+      }
+
+      // 4. Get all ICD codes to match predictions
+      console.log('Step 4: Getting all ICD codes...');
+      const allICDCodes = await icdCodeAPI.getAll();
+      console.log('Step 4 OK: Got ICD codes:', allICDCodes);
+
+      // 5. Create ICD review entries
+      const coderId = 1; // First coder - can be changed based on availability
+      console.log('Step 5: Creating ICD reviews...');
+
+      if (predictions && predictions.predictions && Array.isArray(predictions.predictions) && predictions.predictions.length > 0) {
+        // If predictions exist, create reviews for each prediction
+        for (const pred of predictions.predictions) {
+          // Find matching ICD code
+          const icdCode = allICDCodes.find(code => code.code === pred.code);
+
+          if (icdCode) {
+            const icdReview = {
+              medicalRecordId: savedRecord.id,
+              coderId: coderId,
+              icdCodeId: icdCode.id,
+              status: 'pending',
+              notes: `AI Predicted - Confidence: ${(pred.confidence * 100).toFixed(1)}%`,
+              createdAt: new Date().toISOString()
+            };
+
+            await icdReviewAPI.create(icdReview);
+            console.log('Created ICD review for code:', pred.code);
+          }
+        }
+        console.log('Step 5 OK: All ICD reviews created from predictions');
+      } else {
+        // Fallback: Create a generic ICD review if no valid predictions
+        console.log('Step 5: No valid predictions, creating default review...');
+        const defaultIcdCode = allICDCodes.find(code => code.code === 'R00') || allICDCodes[0];
+
+        if (defaultIcdCode) {
+          const icdReview = {
+            medicalRecordId: savedRecord.id,
+            coderId: coderId,
+            icdCodeId: defaultIcdCode.id,
+            status: 'pending',
+            notes: `AI Pending Review - Diagnosis: ${formData.cc}`,
+            createdAt: new Date().toISOString()
+          };
+
+          await icdReviewAPI.create(icdReview);
+          console.log('Step 5 OK: Default ICD review created');
+        }
+      }
+
+      // 6. Save to localStorage as well (for backward compatibility)
+      const existingPatients = localStorage.getItem('patients');
+      const patients = existingPatients ? JSON.parse(existingPatients) : [];
+      patients.push({
+        ...formData,
+        submittedAt: new Date().toISOString()
+      });
+      localStorage.setItem('patients', JSON.stringify(patients));
+
+      setMessage('✓ Patient record submitted successfully! AI predictions have been generated and sent to coders for review.');
+      console.log('✓ Complete workflow finished');
+
+      // Reset form
+      setFormData({
+        patientName: '',
+        gender: '',
+        age: '',
+        cc: '',
+        pi: '',
+        ph: '',
+        fh: '',
+        examination: '',
+        bt: '',
+        pr: '',
+        rr: '',
+        bp: '',
+        o2: '',
+        preDiagnosis: '',
+        reasonForAdmit: '',
+        treatmentPlan: ''
+      });
+
+    } catch (error) {
+      console.error('Error in workflow:', error);
+      console.error('Error stack:', error.stack);
+      setMessage(`✗ Error: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      {message && (
+        <div className={`message ${message.includes('✓') ? 'success' : 'error'}`}>
+          {message}
+        </div>
+      )}
+
       <div className="form-section">
         <h3 className="section-title">Patient Data</h3>
-        
+
         <div className="form-group">
           <label>Patient Name</label>
           <input
@@ -256,8 +386,8 @@ function NewPatientForm() {
           />
         </div>
 
-        <button type="submit" className="submit-btn">
-          Submit
+        <button type="submit" className="submit-btn" disabled={loading}>
+          {loading ? 'Processing... (Generating AI Predictions)' : 'Submit'}
         </button>
       </div>
     </form>

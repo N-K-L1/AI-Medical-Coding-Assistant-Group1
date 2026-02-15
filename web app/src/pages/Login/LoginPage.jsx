@@ -50,8 +50,8 @@ const LoginPage = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        // Authenticate against db.json
-        const user = await authAPI.loginDoctor(formData.email, formData.password);
+        // Authenticate against db.json using unified login
+        const user = await authAPI.login(formData.email, formData.password);
 
         // Save user info to localStorage
         localStorage.setItem('userEmail', formData.email);

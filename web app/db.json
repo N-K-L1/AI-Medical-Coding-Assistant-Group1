@@ -1,187 +1,271 @@
 {
-    "users": [
-        {
-            "id": 1,
-            "username": "doctor1",
-            "email": "doctor1@hospital.com",
-            "password": "password123",
-            "role": "doctor",
-            "name": "Dr. John Smith",
-            "specialization": "Cardiology"
-        },
-        {
-            "id": 2,
-            "username": "doctor2",
-            "email": "doctor2@hospital.com",
-            "password": "password123",
-            "role": "doctor",
-            "name": "Dr. Sarah Johnson",
-            "specialization": "Neurology"
-        }
-    ],
-    "coders": [
-        {
-            "id": 1,
-            "username": "coder1",
-            "email": "coder1@hospital.com",
-            "password": "password123",
-            "role": "coder",
-            "name": "John Coder"
-        },
-        {
-            "id": 2,
-            "username": "coder2",
-            "email": "coder2@hospital.com",
-            "password": "password123",
-            "role": "coder",
-            "name": "Jane Coder"
-        }
-    ],
-    "patients": [
-        {
-            "id": 1,
-            "name": "Michael Johnson",
-            "age": 45,
-            "dateOfBirth": "1978-06-15",
-            "gender": "Male",
-            "medicalRecordNumber": "MRN001",
-            "phone": "555-0101",
-            "email": "michael@example.com",
-            "address": "123 Main St, Springfield, IL",
-            "doctorId": 1,
-            "createdAt": "2024-02-01"
-        },
-        {
-            "id": 2,
-            "name": "Emily Davis",
-            "age": 38,
-            "dateOfBirth": "1985-11-22",
-            "gender": "Female",
-            "medicalRecordNumber": "MRN002",
-            "phone": "555-0102",
-            "email": "emily@example.com",
-            "address": "456 Oak Ave, Springfield, IL",
-            "doctorId": 1,
-            "createdAt": "2024-02-02"
-        },
-        {
-            "id": 3,
-            "name": "Robert Williams",
-            "age": 56,
-            "dateOfBirth": "1967-03-10",
-            "gender": "Male",
-            "medicalRecordNumber": "MRN003",
-            "phone": "555-0103",
-            "email": "robert@example.com",
-            "address": "789 Pine Rd, Springfield, IL",
-            "doctorId": 2,
-            "createdAt": "2024-02-03"
-        }
-    ],
-    "medicalRecords": [
-        {
-            "id": 1,
-            "patientId": 1,
-            "doctorId": 1,
-            "visitDate": "2024-02-10",
-            "diagnosis": "Hypertension",
-            "symptoms": [
-                "High blood pressure",
-                "Headaches"
-            ],
-            "medications": [
-                "Lisinopril 10mg",
-                "Metoprolol 50mg"
-            ],
-            "notes": "Patient shows signs of stage 2 hypertension. Started on ACE inhibitor and beta blocker.",
-            "icdCodesAssigned": []
-        },
-        {
-            "id": 2,
-            "patientId": 2,
-            "doctorId": 1,
-            "visitDate": "2024-02-11",
-            "diagnosis": "Diabetes Type 2",
-            "symptoms": [
-                "Fatigue",
-                "Increased thirst"
-            ],
-            "medications": [
-                "Metformin 500mg"
-            ],
-            "notes": "Blood glucose levels elevated. Referred to endocrinologist.",
-            "icdCodesAssigned": []
-        },
-        {
-            "id": 3,
-            "patientId": 3,
-            "doctorId": 2,
-            "visitDate": "2024-02-12",
-            "diagnosis": "Migraine",
-            "symptoms": [
-                "Severe headache",
-                "Nausea",
-                "Light sensitivity"
-            ],
-            "medications": [
-                "Sumatriptan 6mg"
-            ],
-            "notes": "Migraine episode with typical presentations. PRN treatment prescribed.",
-            "icdCodesAssigned": []
-        }
-    ],
-    "icdCodes": [
-        {
-            "id": 1,
-            "code": "I10",
-            "description": "Essential (primary) hypertension",
-            "category": "Cardiovascular"
-        },
-        {
-            "id": 2,
-            "code": "E11",
-            "description": "Type 2 diabetes mellitus",
-            "category": "Endocrine and Metabolic"
-        },
-        {
-            "id": 3,
-            "code": "G43.1",
-            "description": "Migraine with aura",
-            "category": "Neurological"
-        },
-        {
-            "id": 4,
-            "code": "J44.9",
-            "description": "Chronic obstructive pulmonary disease, unspecified",
-            "category": "Respiratory"
-        },
-        {
-            "id": 5,
-            "code": "M79.3",
-            "description": "Panniculitis, unspecified",
-            "category": "Musculoskeletal"
-        }
-    ],
-    "icdReviews": [
-        {
-            "id": 1,
-            "medicalRecordId": 1,
-            "coderId": 1,
-            "icdCodeId": 1,
-            "status": "pending",
-            "notes": "Awaiting coder review",
-            "createdAt": "2024-02-10",
-            "reviewedAt": null
-        },
-        {
-            "id": 2,
-            "medicalRecordId": 2,
-            "coderId": 2,
-            "icdCodeId": 2,
-            "status": "approved",
-            "notes": "Code correctly assigned",
-            "createdAt": "2024-02-11",
-            "reviewedAt": "2024-02-12"
-        }
-    ]
+  "users": [
+    {
+      "id": "1",
+      "username": "doctor1",
+      "email": "doctor1@hospital.com",
+      "password": "password123",
+      "role": "doctor",
+      "name": "Dr. John Smith",
+      "specialization": "Cardiology"
+    },
+    {
+      "id": "2",
+      "username": "doctor2",
+      "email": "doctor2@hospital.com",
+      "password": "password123",
+      "role": "doctor",
+      "name": "Dr. Sarah Johnson",
+      "specialization": "Neurology"
+    }
+  ],
+  "coders": [
+    {
+      "id": "1",
+      "username": "coder1",
+      "email": "coder1@hospital.com",
+      "password": "password123",
+      "role": "coder",
+      "name": "John Coder"
+    },
+    {
+      "id": "2",
+      "username": "coder2",
+      "email": "coder2@hospital.com",
+      "password": "password123",
+      "role": "coder",
+      "name": "Jane Coder"
+    }
+  ],
+  "patients": [
+    {
+      "id": "1",
+      "name": "Michael Johnson",
+      "age": 45,
+      "dateOfBirth": "1978-06-15",
+      "gender": "Male",
+      "medicalRecordNumber": "MRN001",
+      "phone": "555-0101",
+      "email": "michael@example.com",
+      "address": "123 Main St, Springfield, IL",
+      "doctorId": 1,
+      "createdAt": "2024-02-01"
+    },
+    {
+      "id": "2",
+      "name": "Emily Davis",
+      "age": 38,
+      "dateOfBirth": "1985-11-22",
+      "gender": "Female",
+      "medicalRecordNumber": "MRN002",
+      "phone": "555-0102",
+      "email": "emily@example.com",
+      "address": "456 Oak Ave, Springfield, IL",
+      "doctorId": 1,
+      "createdAt": "2024-02-02"
+    },
+    {
+      "id": "3",
+      "name": "Robert Williams",
+      "age": 56,
+      "dateOfBirth": "1967-03-10",
+      "gender": "Male",
+      "medicalRecordNumber": "MRN003",
+      "phone": "555-0103",
+      "email": "robert@example.com",
+      "address": "789 Pine Rd, Springfield, IL",
+      "doctorId": 2,
+      "createdAt": "2024-02-03"
+    }
+  ],
+  "medicalRecords": [
+    {
+      "id": "1",
+      "patientId": 1,
+      "doctorId": 1,
+      "visitDate": "2024-02-10",
+      "diagnosis": "Hypertension",
+      "symptoms": [
+        "High blood pressure",
+        "Headaches"
+      ],
+      "medications": [
+        "Lisinopril 10mg",
+        "Metoprolol 50mg"
+      ],
+      "notes": "Patient shows signs of stage 2 hypertension. Started on ACE inhibitor and beta blocker.",
+      "icdCodesAssigned": []
+    },
+    {
+      "id": "2",
+      "patientId": 2,
+      "doctorId": 1,
+      "visitDate": "2024-02-11",
+      "diagnosis": "Diabetes Type 2",
+      "symptoms": [
+        "Fatigue",
+        "Increased thirst"
+      ],
+      "medications": [
+        "Metformin 500mg"
+      ],
+      "notes": "Blood glucose levels elevated. Referred to endocrinologist.",
+      "icdCodesAssigned": []
+    },
+    {
+      "id": "3",
+      "patientId": 3,
+      "doctorId": 2,
+      "visitDate": "2024-02-12",
+      "diagnosis": "Migraine",
+      "symptoms": [
+        "Severe headache",
+        "Nausea",
+        "Light sensitivity"
+      ],
+      "medications": [
+        "Sumatriptan 6mg"
+      ],
+      "notes": "Migraine episode with typical presentations. PRN treatment prescribed.",
+      "icdCodesAssigned": []
+    },
+    {
+      "id": "d1f5",
+      "patientId": 1,
+      "doctorId": 1,
+      "visitDate": "2026-02-15",
+      "diagnosis": "Severe headache with vision changes",
+      "symptoms": [
+        "Acute onset migraine with aura. Reports visual disturbances 30 minutes before headache onset. Accompanied by nausea and photophobia."
+      ],
+      "medications": [
+        "Sumatriptan 6mg injection, rest in dark room, follow-up in 1 week"
+      ],
+      "notes": "Migraine with aura",
+      "icdCodesAssigned": []
+    },
+    {
+      "id": "ecc1",
+      "patientId": 1,
+      "doctorId": 1,
+      "visitDate": "2026-02-15",
+      "diagnosis": "Severe headache with vision changes",
+      "symptoms": [
+        "Acute onset migraine with aura. Reports visual disturbances 30 minutes before headache onset. Accompanied by nausea and photophobia."
+      ],
+      "medications": [
+        "Sumatriptan 6mg injection, rest in dark room, follow-up in 1 week"
+      ],
+      "notes": "Migraine with aura",
+      "icdCodesAssigned": []
+    },
+    {
+      "id": "a646",
+      "patientId": 1,
+      "doctorId": 1,
+      "visitDate": "2026-02-15",
+      "diagnosis": "Severe headache with vision changes",
+      "symptoms": [
+        "Acute onset migraine with aura. Reports visual disturbances 30 minutes before headache onset. Accompanied by nausea and photophobia."
+      ],
+      "medications": [
+        "Sumatriptan 6mg injection, rest in dark room, follow-up in 1 week"
+      ],
+      "notes": "Migraine with aura",
+      "icdCodesAssigned": []
+    },
+    {
+      "id": "a16a",
+      "patientId": 1,
+      "doctorId": 1,
+      "visitDate": "2026-02-15",
+      "diagnosis": "Severe headache with vision changes",
+      "symptoms": [
+        "Acute onset migraine with aura. Reports visual disturbances 30 minutes before headache onset. Accompanied by nausea and photophobia."
+      ],
+      "medications": [
+        "Sumatriptan 6mg injection, rest in dark room, follow-up in 1 week"
+      ],
+      "notes": "Migraine with aura",
+      "icdCodesAssigned": []
+    },
+    {
+      "id": "4fe9",
+      "patientId": 1,
+      "doctorId": 2,
+      "visitDate": "2026-02-15",
+      "diagnosis": "Increased thirst, fatigue, weight loss",
+      "symptoms": [
+        "Experiencing increased thirst and urination for 3 weeks. Unusual fatigue despite adequate sleep. Unintentional weight loss of 5 lbs."
+      ],
+      "medications": [
+        "Metformin 500mg twice daily, referred to endocrinologist and nutritionist"
+      ],
+      "notes": "Type 2 diabetes mellitus, newly diagnosed",
+      "icdCodesAssigned": []
+    },
+    {
+      "id": "1980",
+      "patientId": 1,
+      "doctorId": 2,
+      "visitDate": "2026-02-15",
+      "diagnosis": "Increased thirst, fatigue, weight loss",
+      "symptoms": [
+        "Experiencing increased thirst and urination for 3 weeks. Unusual fatigue despite adequate sleep. Unintentional weight loss of 5 lbs."
+      ],
+      "medications": [
+        "Metformin 500mg twice daily, referred to endocrinologist and nutritionist"
+      ],
+      "notes": "Type 2 diabetes mellitus, newly diagnosed",
+      "icdCodesAssigned": []
+    }
+  ],
+  "icdCodes": [
+    {
+      "id": "1",
+      "code": "I10",
+      "description": "Essential (primary) hypertension",
+      "category": "Cardiovascular"
+    },
+    {
+      "id": "2",
+      "code": "E11",
+      "description": "Type 2 diabetes mellitus",
+      "category": "Endocrine and Metabolic"
+    },
+    {
+      "id": "3",
+      "code": "G43.1",
+      "description": "Migraine with aura",
+      "category": "Neurological"
+    },
+    {
+      "id": "4",
+      "code": "J44.9",
+      "description": "Chronic obstructive pulmonary disease, unspecified",
+      "category": "Respiratory"
+    },
+    {
+      "id": "5",
+      "code": "M79.3",
+      "description": "Panniculitis, unspecified",
+      "category": "Musculoskeletal"
+    }
+  ],
+  "icdReviews": [
+    {
+      "status": "rejected",
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "medicalRecordId": 2,
+      "coderId": 2,
+      "icdCodeId": 2,
+      "status": "approved",
+      "notes": "Code correctly assigned",
+      "createdAt": "2024-02-11",
+      "reviewedAt": "2024-02-12"
+    }
+  ]
 }
